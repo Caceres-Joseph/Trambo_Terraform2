@@ -27,7 +27,7 @@ resource "aws_security_group" "ingress-all-test" {
   #-------------
   # Public instance
   
-resource "aws_instance" "ec2_joseph" {
+resource "aws_instance" "ec2_joseph_public" {
   ami                         = "ami-0b37e9efc396e4c38"
   instance_type               = "t2.micro"
   availability_zone           = "${var.availability_zones[0]}"  
@@ -49,7 +49,7 @@ resource "aws_instance" "ec2_joseph" {
   #-------------
   # Private instance
   
-resource "aws_instance" "ec2_joseph" {
+resource "aws_instance" "ec2_joseph_private" {
   ami                         = "ami-0b37e9efc396e4c38"
   instance_type               = "t2.micro"
   availability_zone           = "${var.availability_zones[0]}"  
