@@ -31,7 +31,7 @@ module "newtwork" {
 +--------------------------------
 */
 
-/*
+
 module "instances" {
   source = "./../../modules/instances"
   project = "${var.project}"
@@ -39,7 +39,6 @@ module "instances" {
   region="${var.region}"
 
   public_subnet_ids= "${module.newtwork.public_subnet_ids}"
-  availability_zones= "${module.newtwork.availability_zones}"
+  //availability_zones= "${module.newtwork.availability_zones}"
 }
 
-*/
