@@ -1,6 +1,28 @@
 
 
   #-------------
+  # Security group
+
+resource "aws_security_group" "ingress-all-test" {
+name = "allow-all-sg"
+vpc_id = "${var.id_vpc}"
+ingress {
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+from_port = 22
+    to_port = 22
+    protocol = "tcp"
+  }
+// Terraform removes the default rule
+  egress {
+   from_port = 0
+   to_port = 0
+   protocol = "-1"
+   cidr_blocks = ["0.0.0.0/0"]
+ }
+}
+  #-------------
   # Instance
   
 resource "aws_instance" "ec2_joseph" {
@@ -10,6 +32,7 @@ resource "aws_instance" "ec2_joseph" {
   monitoring                  = true
   subnet_id                   = "${var.public_subnet_ids.*.id[0]}"
   associate_public_ip_address = true
+  security_groups = ["${aws_security_group.ingress-all-test.id}"]
 
   tags = {
     Name        = "ec2_joseph"

@@ -11,3 +11,8 @@ output "private_subnet_ids" {
 output "availability_zones" { 
   value = "${var.availability_zones}"
 }
+
+
+output "id_vpc" { 
+  value = "${aws_vpc.my_vpc.id}"
+}

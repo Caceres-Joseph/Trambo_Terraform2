@@ -10,6 +10,11 @@ variable "region" {}
 
 
   #-------------
+  # VPC id
+
+
+variable "id_vpc" {}
+  #-------------
   # Subnets
 
 

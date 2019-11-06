@@ -38,3 +38,49 @@ variable "availability_zones" {
   type    = "list"
   default = ["us-west-2a", "us-west-2b" , "us-west-2a"]
 }
+
+
+
+//Security group
+
+resource "aws_security_group" "default" {
+vpc_id = "${aws_vpc.myvpc.id}"
+
+  # ... snip ...
+  # security group rules can go here
+}
+variable "http_ports" {
+  default = ["80", "443", "8080", "8443"]
+}
+resource "aws_security_group_rule" "ingress" {
+  count = "${length(var.http_ports)}"
+
+  type        = "ingress"
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  from_port   = "${element(var.http_ports, count.index)}"
+  to_port     = "${element(var.http_ports, count.index)}"
+
+  security_group_id = "${aws_security_group.default.id}"
+}
+
+
+resource "aws_security_group_rule" "egress" {
+  type        = "egress"
+  from_port   = 0
+  to_port     = 0
+  protocol    = -1
+  cidr_blocks = ["0.0.0.0/0"]
+
+  security_group_id = "${aws_security_group.default.id}"
+}
+
+resource "aws_security_group_rule" "ssh_from_me" {
+  type            = "ingress"
+  from_port       = 22
+  to_port         = 22
+  protocol        = "tcp"
+  cidr_blocks     = ["${chomp(data.http.my_local_ip.body)}/32"]
+
+  security_group_id = "${aws_default_security_group.default.id}"
+}
