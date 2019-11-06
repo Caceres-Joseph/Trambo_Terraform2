@@ -39,6 +39,8 @@ module "instances" {
   region="${var.region}"
 
   public_subnet_ids= "${module.newtwork.public_subnet_ids}"
+  private_subnet_ids= "${module.newtwork.private_subnet_ids}"
+
   availability_zones= "${module.newtwork.availability_zones}"
   id_vpc ="${module.newtwork.id_vpc}"
 }

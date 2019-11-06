@@ -22,8 +22,10 @@ resource "aws_security_group" "ingress-all-test" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+
   #-------------
-  # Instance
+  # Public instance
   
 resource "aws_instance" "ec2_joseph" {
   ami                         = "ami-0b37e9efc396e4c38"
@@ -36,7 +38,28 @@ resource "aws_instance" "ec2_joseph" {
   key_name = "joseph-key"
 
   tags = {
-    Name        = "ec2_joseph"
+    Name        = "ec2_joseph_public"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+  }
+}
+
+
+
+  #-------------
+  # Private instance
+  
+resource "aws_instance" "ec2_joseph" {
+  ami                         = "ami-0b37e9efc396e4c38"
+  instance_type               = "t2.micro"
+  availability_zone           = "${var.availability_zones[0]}"  
+  monitoring                  = true
+  subnet_id                   = "${var.private_subnet_ids.*.id[0]}"
+  associate_public_ip_address = false
+  security_groups = ["${aws_security_group.ingress-all-test.id}"] 
+
+  tags = {
+    Name        = "ec2_joseph_private"
     Project     = "${var.project}"
     Environment = "${var.environment}"
   }
