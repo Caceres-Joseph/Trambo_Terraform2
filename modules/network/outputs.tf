@@ -1,16 +1,13 @@
 
-output "public_subnet_ids" {
-  type    = "list"
+output "public_subnet_ids" { 
   value = ["${aws_subnet.public.*.id}"]
 }
 
-output "private_subnet_ids" {
-  type    = "list"
+output "private_subnet_ids" { 
   value = ["${aws_subnet.private.*.id}"]
 }
 
 
-output "availability_zones" {
-  type    = "list"
+output "availability_zones" { 
   value = ["${var.availability_zones}"]
 }
