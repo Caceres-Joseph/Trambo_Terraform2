@@ -14,7 +14,6 @@ variable "region" {}
 
 
 variable "public_subnet_ids" {
-  type    = "list"
 }
  
 
