@@ -50,14 +50,13 @@ resource "aws_instance" "ec2_joseph_public" {
   # Private instance
   
 resource "aws_instance" "ec2_joseph_private" {
-  count                   = "${length(var.private_subnet_ids.*.id)}"
-
+  
 
   ami                         = "ami-0b37e9efc396e4c38"
   instance_type               = "t2.micro"
   availability_zone           = "${var.availability_zones[0]}"  
   monitoring                  = true
-  subnet_id                   = "${var.private_subnet_ids.*.id[count.index]}"
+  subnet_id                   = "${var.private_subnet_ids.*.id[0]}"
   associate_public_ip_address = false
   security_groups = ["${aws_security_group.ingress-all-test.id}"] 
 
