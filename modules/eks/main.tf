@@ -270,14 +270,10 @@ resource "aws_autoscaling_group" "demo" {
   name                 = "terraform-eks-demo"
   vpc_zone_identifier  = ["${var.public_subnet_ids.*.id}"]
 
-  tag {
+  tags= {
     key                 = "Name"
     value               = "terraform-eks-demo"
     propagate_at_launch = true
   }
-
-  tags = {
-    value               = "owned"
-    propagate_at_launch = true
-  }
+ 
 }
