@@ -3,7 +3,7 @@
   #-------------
   # Role
 
-/*
+
 resource "aws_iam_role" "demo-cluster" {
   name = "terraform-eks-demo-cluster"
 
@@ -24,7 +24,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy_attachment" "demo-cluster-AmazonEKSClusterPolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/  "
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = "${aws_iam_role.demo-cluster.name}"
 }
 
@@ -32,7 +32,7 @@ resource "aws_iam_role_policy_attachment" "demo-cluster-AmazonEKSServicePolicy" 
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
   role       = "${aws_iam_role.demo-cluster.name}"
 }
-*/
+
   #-------------
   # EKS Master Cluster Security Group
 
@@ -72,19 +72,17 @@ resource "aws_security_group_rule" "demo-cluster-ingress-workstation-https" {
 
 resource "aws_eks_cluster" "demo" {
   name            = "${var.cluster-name}"
-  role_arn        = "arn:aws:iam::492266378106:role/EKSRoleAylin"
+  role_arn        = "${aws_iam_role.demo-cluster.arn}"
 
   vpc_config {
     security_group_ids = ["${aws_security_group.demo-cluster.id}"]
     subnet_ids         = "${var.public_subnet_ids.*.id}"
   }
 
-/*
   depends_on = [
     "aws_iam_role_policy_attachment.demo-cluster-AmazonEKSClusterPolicy",
     "aws_iam_role_policy_attachment.demo-cluster-AmazonEKSServicePolicy",
   ]
-  */
 }
 
 
