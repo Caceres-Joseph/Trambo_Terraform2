@@ -216,3 +216,29 @@ resource "aws_security_group_rule" "demo-node-ingress-cluster" {
   type                     = "ingress"
 }
 
+
+  #-------------
+  # Worker Node Access to EKS Master Cluster
+
+resource "aws_security_group_rule" "demo-cluster-ingress-node-https" {
+  description              = "Allow pods to communicate with the cluster API Server"
+  from_port                = 443
+  protocol                 = "tcp"
+  security_group_id        = "${aws_security_group.demo-cluster.id}"
+  source_security_group_id = "${aws_security_group.demo-node.id}"
+  to_port                  = 443
+  type                     = "ingress"
+}
+
+  #-------------
+  # Worker Node AutoScaling Group
+
+data "aws_ami" "eks-worker" {
+  filter {
+    name   = "name"
+    values = ["amazon-eks-node-${aws_eks_cluster.demo.version}-v*"]
+  }
+
+  most_recent = true
+  owners      = ["602401143452"] # Amazon EKS AMI Account ID
+}
