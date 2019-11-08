@@ -242,3 +242,18 @@ data "aws_ami" "eks-worker" {
   most_recent = true
   owners      = ["602401143452"] # Amazon EKS AMI Account ID
 }
+
+
+resource "aws_launch_configuration" "demo" {
+  associate_public_ip_address = true
+  iam_instance_profile        = "${aws_iam_instance_profile.demo-node.name}"
+  image_id                    = "${aws_ami.eks-worker.id}"
+  instance_type               = "t2.micro"
+  name_prefix                 = "terraform-eks-demo"
+  security_groups             = ["${aws_security_group.demo-node.id}"]
+  user_data_base64            = "${base64encode(local.demo-node-userdata)}"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
