@@ -249,7 +249,7 @@ resource "aws_launch_configuration" "demo" {
   iam_instance_profile        = "${aws_iam_instance_profile.demo-node.name}"
   image_id                    = "${data.aws_ami.eks-worker.id}"
   instance_type               = "t2.micro"
-  name_prefix                 = "terraform-eks-demo"
+  name_prefix                 = "terraform-eks-demo-joseph"
   security_groups             = ["${aws_security_group.demo-node.id}"]
   user_data_base64            = "${base64encode(local.demo-node-userdata)}"
 
